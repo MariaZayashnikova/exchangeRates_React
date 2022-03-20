@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { ListGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from 'react-router-dom'
 import { getExchangeRates } from '../../services/services';
+import { getDateData } from '../DateUtils/DateUtils';
 import './CurrentList.css'
 
 function CurrentList() {
     const [rates, setRates] = useState([]);
+    const [dateNow, setDateNow] = useState({});
+    const [loading, setLoading] = useState(true);
+
+    const changeLoading = () => setLoading(!loading);
 
     function addRates(data) {
+        let date = getDateData(new Date(data.Date));
+        setDateNow(date);
         setRates(Object.values(data.Valute));
+        changeLoading();
     };
 
     function getRates() {
@@ -41,30 +50,28 @@ function CurrentList() {
 
     return (
         <div className="currentList">
+            {dateNow ? <div className="currentList-date">{dateNow.day}.{dateNow.month}.{dateNow.year}</div> : null}
             <div className="headerList">
                 <div>Код валюты</div>
                 <div>Значение в рублях</div>
                 <div>Изменение от прошлого дня</div>
             </div>
+            {loading ? <FontAwesomeIcon icon="fa-solid fa-spinner" className="spiner" size='2x' /> : null}
             <ListGroup className="listBlock">
                 {rates.map(rate => {
                     return (
-                        <OverlayTrigger
-                            placement='right-end'
-                            delay={{ show: 250, hide: 400 }}
-                            overlay={renderTooltip}
-                            key={rate.ID}
-                        >
-                            <ListGroup.Item className="listItem" >
+                        <Link to={`/archive/${rate.CharCode}`} className="listBlock-link" key={rate.ID}>
+                            <ListGroup.Item className="listItem">
                                 <div>{rate.CharCode}</div>
                                 <div>{rate.Value}</div>
                                 <ChangeRates prevValue={rate.Previous} currentValue={rate.Value} />
                             </ListGroup.Item>
-                        </OverlayTrigger>
+
+                        </Link>
                     )
                 })}
             </ListGroup>
-        </div>
+        </div >
     )
 }
 

@@ -14,3 +14,14 @@
 .app-header {
   margin: 10px 0;
 }
+
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+
+.spiner {
+  animation-name: spinner;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  color: rgb(121, 5, 145);
+}

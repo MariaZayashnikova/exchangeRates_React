@@ -4,6 +4,10 @@
     color: rgb(8, 2, 48);
 }
 
+.currentList-date {
+    font-size: 20px;
+}
+
 .headerList {
     display: flex;
     width: 80vw;
@@ -25,6 +29,10 @@
     overflow: auto;
 }
 
+.listBlock-link {
+    text-decoration: none;
+}
+
 .listItem {
     display: flex;
     justify-content: space-around;
@@ -36,6 +44,7 @@
 .listItem:hover {
     background-image: linear-gradient(to right bottom, #ce18ce83, rgba(30, 15, 238, 0.452));
     cursor: pointer;
+    color: white;
 }
 
 .listItem div {
