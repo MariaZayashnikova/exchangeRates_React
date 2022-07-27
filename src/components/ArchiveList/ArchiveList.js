@@ -27,9 +27,8 @@ function ArchiveList() {
                 let dataCurDate = getDateData(new Date(elem.Date));
 
                 let objRate = elem.Valute[params.itemId];
-
                 let obj = {
-                    data: `${dataCurDate.day}.${dataCurDate.month}.${dataCurDate.year}`,
+                    date: `${dataCurDate.day}.${dataCurDate.month}.${dataCurDate.year}`,
                     value: objRate.Value
                 }
                 dataForState.push(obj)
@@ -40,21 +39,22 @@ function ArchiveList() {
 
     async function getRates() {
         let result = [];
-        let currentDate = getDateData(new Date());
+        let currentDate;
 
         await getExchangeRates()
-            .then(data => result.push(data));
+            .then(data => {
+                result.push(data);
+                currentDate = getDateData(new Date(data.Date));
+            });
 
         for (let i = 1; i < 10; i++) {
             let oldDate = getDateData(new Date(currentDate.year, currentDate.month - 1, currentDate.day - i));
-
-            if (currentDate.day - 1 === oldDate.day) continue;
 
             await getArchiveRates(`https://www.cbr-xml-daily.ru/archive/${oldDate.year}/${oldDate.month}/${oldDate.day}/daily_json.js`)
                 .then(data => {
                     if (!data) {
                         let obj = {
-                            data: `${oldDate.day}.${oldDate.month}.${oldDate.year}`,
+                            date: `${oldDate.day}.${oldDate.month}.${oldDate.year}`,
                             value: 'Нет данных'
                         }
                         result.push(obj);
@@ -84,7 +84,7 @@ function ArchiveList() {
                 {valueRate.map(item => {
                     return (
                         <ListGroup.Item className="listItem" key={item.data}>
-                            <div>{item.data}</div>
+                            <div>{item.date}</div>
                             <div>{item.value}</div>
                         </ListGroup.Item>
                     )

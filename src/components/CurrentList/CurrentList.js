@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { ListGroup, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { getExchangeRates } from '../../services/services';
 import { getDateData } from '../DateUtils/DateUtils';
-import './CurrentList.css'
+import './CurrentList.css';
 
 function CurrentList() {
     const [rates, setRates] = useState([]);
@@ -29,12 +29,18 @@ function CurrentList() {
         getRates()
     }, []);
 
-    const ChangeRates = ({ prevValue, currentValue }) => {
+    const ChangeRates = ({ prevValue, currentValue, name }) => {
         let res = (100 * prevValue / currentValue - 100).toFixed(1);
 
         return (
             <div>
-                {res}%
+                <OverlayTrigger
+                    placement={"bottom"}
+                    overlay={renderTooltip(name)}
+                >
+                    <span>{res}%</span>
+                </OverlayTrigger>
+
                 {res > 0 ?
                     <FontAwesomeIcon className="changeIcon changeIcon-up" icon="fa-solid fa-angle-up" />
                     : <FontAwesomeIcon className="changeIcon changeIcon-down" icon="fa-solid fa-angle-down" />}
@@ -42,9 +48,9 @@ function CurrentList() {
         )
     }
 
-    const renderTooltip = (props) => (
-        <Tooltip id="tooltip" {...props}>
-            Simple tooltip
+    const renderTooltip = (text) => (
+        <Tooltip id="tooltip" className="tooltipCst">
+            {text}
         </Tooltip>
     );
 
@@ -61,12 +67,25 @@ function CurrentList() {
                 {rates.map(rate => {
                     return (
                         <Link to={`/archive/${rate.CharCode}`} className="listBlock-link" key={rate.ID}>
-                            <ListGroup.Item className="listItem">
-                                <div>{rate.CharCode}</div>
-                                <div>{rate.Value}</div>
-                                <ChangeRates prevValue={rate.Previous} currentValue={rate.Value} />
+                            <ListGroup.Item className="listItem" >
+                                <div >
+                                    <OverlayTrigger
+                                        placement={"bottom"}
+                                        overlay={renderTooltip(rate.Name)}
+                                    >
+                                        <span>{rate.CharCode}</span>
+                                    </OverlayTrigger>
+                                </div>
+                                <div>
+                                    <OverlayTrigger
+                                        placement={"bottom"}
+                                        overlay={renderTooltip(rate.Name)}
+                                    >
+                                        <span>{rate.Value}</span>
+                                    </OverlayTrigger>
+                                </div>
+                                <ChangeRates prevValue={rate.Previous} currentValue={rate.Value} name={rate.Name} />
                             </ListGroup.Item>
-
                         </Link>
                     )
                 })}
