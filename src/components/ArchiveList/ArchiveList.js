@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ListGroup } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom'
 import { getArchiveRates } from '../../services/services';
 import { getExchangeRates } from '../../services/services';
@@ -73,17 +75,21 @@ function ArchiveList() {
     return (
         <div className="currentList">
             <div className="headerList">
-                <div>{params.itemId}</div>
+                <div>Данные за последние 10 дней по валюте: {params.itemId}</div>
+                <Link to="/">
+                    <Button variant='secondary'>На главную</Button>
+                </Link>
             </div>
             <div className="headerList">
                 <div>Дата</div>
                 <div>Значение в рублях</div>
             </div>
+
             {loading ? <FontAwesomeIcon icon="fa-solid fa-spinner" className="spiner" size='2x' /> : null}
             <ListGroup className="listBlock">
                 {valueRate.map(item => {
                     return (
-                        <ListGroup.Item className="listItem" key={item.data}>
+                        <ListGroup.Item id="listItem" key={item.date}>
                             <div>{item.date}</div>
                             <div>{item.value}</div>
                         </ListGroup.Item>

@@ -67,7 +67,7 @@ function CurrentList() {
                 {rates.map(rate => {
                     return (
                         <Link to={`/archive/${rate.CharCode}`} className="listBlock-link" key={rate.ID}>
-                            <ListGroup.Item className="listItem" >
+                            <ListGroup.Item id="listItem" >
                                 <div >
                                     <OverlayTrigger
                                         placement={"bottom"}
