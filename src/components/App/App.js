@@ -4,23 +4,25 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import CurrentList from '../CurrentList/CurrentList';
 import ArchiveList from '../ArchiveList/ArchiveList';
+import ErrorComponent from '../ErrorComponent/ErrorComponent';
 import './App.css';
 
 library.add(fas);
 
 function App() {
   return (
-    <HashRouter>
-      <div className="app">
-        <header className='app-header'>Курсы валют в рублях от ЦБ РФ</header>
+    <div className="app">
+      <header className='app-header'>Курсы валют в рублях от ЦБ РФ</header>
+      <HashRouter>
         <Routes>
           <Route path='/' element={<CurrentList />} />
           <Route path='/archive' element={<ArchiveList />}>
             <Route path=':itemId' element={<ArchiveList />} />
           </Route>
+          <Route path='*' element={<ErrorComponent />} />
         </Routes>
-      </div>
-    </HashRouter>
+      </HashRouter>
+    </div>
   );
 }
 
