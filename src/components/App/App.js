@@ -1,10 +1,10 @@
-import './App.css';
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CurrentList from '../CurrentList/CurrentList';
-import ArchiveList from '../ArchiveList/ArchiveList'
+import ArchiveList from '../ArchiveList/ArchiveList';
+import './App.css';
 
 library.add(fas);
 
