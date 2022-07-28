@@ -56,11 +56,11 @@ function CurrentList() {
 
     return (
         <div className="currentList">
-            {dateNow ? <div className="currentList-date">{dateNow.day}.{dateNow.month}.{dateNow.year}</div> : null}
+            {dateNow ? <h1 className="currentList-date">{dateNow.day}.{dateNow.month}.{dateNow.year}</h1> : null}
             <div className="headerList">
-                <div>Код валюты</div>
-                <div>Значение в рублях</div>
-                <div>Изменение от прошлого дня</div>
+                <h5>Код валюты</h5>
+                <h5>Значение в рублях</h5>
+                <h5>Изменение от прошлого дня</h5>
             </div>
             {loading ? <FontAwesomeIcon icon="fa-solid fa-spinner" className="spiner" size='2x' /> : null}
             <ListGroup className="listBlock">

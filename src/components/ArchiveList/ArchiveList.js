@@ -7,11 +7,13 @@ import { useParams } from 'react-router-dom'
 import { getArchiveRates } from '../../services/services';
 import { getExchangeRates } from '../../services/services';
 import { getDateData } from '../DateUtils/DateUtils';
+import './ArchiveList.css';
 
 function ArchiveList() {
     let params = useParams();
     const [valueRate, setValueRate] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [nameRate, setNameRate] = useState();
 
     const changeLoading = () => setLoading(!loading);
 
@@ -66,6 +68,9 @@ function ArchiveList() {
                 });
         }
         modifyData(result);
+        result.forEach(elem => {
+            if (elem.Valute[params.itemId]) setNameRate(elem.Valute[params.itemId].Name);
+        });
     };
 
     useEffect(() => {
@@ -75,16 +80,15 @@ function ArchiveList() {
     return (
         <div className="currentList">
             <div className="headerList">
-                <div>Данные за последние 10 дней по валюте: {params.itemId}</div>
+                <h4 className="headerList-titile">Данные за последние 10 дней по валюте: <strong>{nameRate}</strong></h4>
                 <Link to="/">
                     <Button variant='secondary'>На главную</Button>
                 </Link>
             </div>
             <div className="headerList">
-                <div>Дата</div>
-                <div>Значение в рублях</div>
+                <h5>Дата</h5>
+                <h5>Значение в рублях</h5>
             </div>
-
             {loading ? <FontAwesomeIcon icon="fa-solid fa-spinner" className="spiner" size='2x' /> : null}
             <ListGroup className="listBlock">
                 {valueRate.map(item => {
