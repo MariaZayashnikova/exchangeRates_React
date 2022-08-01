@@ -10,6 +10,6 @@ https://mariazayashnikova.github.io/exchangeRates_React/
 
 По каждой валюте можно узнать ее значения за последние 10 дней.
 
-проект был создан с помощью Create React App, для стилей используются компоненты React Bootstrap.
+Проект был создан с помощью Create React App, для стилей используются компоненты React Bootstrap.
 
-В проекте используется <HashRouter> вместо <BrowserRouter>, чтобы можно было развернуть приложение на GitHub Pages.
+В проекте используется HashRouter вместо BrowserRouter, чтобы можно было развернуть приложение на GitHub Pages.
