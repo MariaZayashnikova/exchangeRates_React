@@ -4,12 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
 import { getExchangeRates } from '../../services/services';
 import { getDateData } from '../DateUtils/DateUtils';
+import { Failed } from "../ErrorComponents/ErrorComponents";
 import './CurrentList.css';
 
 function CurrentList() {
     const [rates, setRates] = useState([]);
     const [dateNow, setDateNow] = useState({});
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
     const changeLoading = () => setLoading(!loading);
 
@@ -22,7 +24,11 @@ function CurrentList() {
 
     function getRates() {
         getExchangeRates()
-            .then(addRates);
+            .then(addRates)
+            .catch(() => {
+                setError(true);
+                changeLoading();
+            });
     }
 
     useEffect(() => {
@@ -55,42 +61,46 @@ function CurrentList() {
     );
 
     return (
-        <div className="currentList">
-            {dateNow ? <h1 className="currentList-date">{dateNow.day}.{dateNow.month}.{dateNow.year}</h1> : null}
-            <div className="headerList">
-                <h5>Код валюты</h5>
-                <h5>Значение в рублях</h5>
-                <h5>Изменение от прошлого дня</h5>
-            </div>
-            {loading ? <FontAwesomeIcon icon="fa-solid fa-spinner" className="spiner" size='2x' /> : null}
-            <ListGroup className="listBlock">
-                {rates.map(rate => {
-                    return (
-                        <Link to={`/archive/${rate.CharCode}`} className="listBlock-link" key={rate.ID}>
-                            <ListGroup.Item id="listItem" >
-                                <div >
-                                    <OverlayTrigger
-                                        placement={"bottom"}
-                                        overlay={renderTooltip(rate.Name)}
-                                    >
-                                        <span>{rate.CharCode}</span>
-                                    </OverlayTrigger>
-                                </div>
-                                <div>
-                                    <OverlayTrigger
-                                        placement={"bottom"}
-                                        overlay={renderTooltip(rate.Name)}
-                                    >
-                                        <span>{rate.Value}</span>
-                                    </OverlayTrigger>
-                                </div>
-                                <ChangeRates prevValue={rate.Previous} currentValue={rate.Value} name={rate.Name} />
-                            </ListGroup.Item>
-                        </Link>
-                    )
-                })}
-            </ListGroup>
-        </div >
+        <>
+            {error ? <Failed /> :
+                <div className="currentList">
+                    {dateNow ? <h1 className="currentList-date">{dateNow.day}.{dateNow.month}.{dateNow.year}</h1> : null}
+                    <div className="headerList">
+                        <h5>Код валюты</h5>
+                        <h5>Значение в рублях</h5>
+                        <h5>Изменение от прошлого дня</h5>
+                    </div>
+                    {loading ? <FontAwesomeIcon icon="fa-solid fa-spinner" className="spiner" size='2x' /> : null}
+                    <ListGroup className="listBlock">
+                        {rates.map(rate => {
+                            return (
+                                <Link to={`/archive/${rate.CharCode}`} className="listBlock-link" key={rate.ID}>
+                                    <ListGroup.Item id="listItem" >
+                                        <div >
+                                            <OverlayTrigger
+                                                placement={"bottom"}
+                                                overlay={renderTooltip(rate.Name)}
+                                            >
+                                                <span>{rate.CharCode}</span>
+                                            </OverlayTrigger>
+                                        </div>
+                                        <div>
+                                            <OverlayTrigger
+                                                placement={"bottom"}
+                                                overlay={renderTooltip(rate.Name)}
+                                            >
+                                                <span>{rate.Value}</span>
+                                            </OverlayTrigger>
+                                        </div>
+                                        <ChangeRates prevValue={rate.Previous} currentValue={rate.Value} name={rate.Name} />
+                                    </ListGroup.Item>
+                                </Link>
+                            )
+                        })}
+                    </ListGroup>
+                </div >
+            }
+        </>
     )
 }
 

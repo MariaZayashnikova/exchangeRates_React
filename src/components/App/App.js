@@ -4,7 +4,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import CurrentList from '../CurrentList/CurrentList';
 import ArchiveList from '../ArchiveList/ArchiveList';
-import ErrorComponent from '../ErrorComponent/ErrorComponent';
+import { NoFound } from '../ErrorComponents/ErrorComponents';
 import './App.css';
 
 library.add(fas);
@@ -19,7 +19,7 @@ function App() {
           <Route path='/archive' element={<ArchiveList />}>
             <Route path=':itemId' element={<ArchiveList />} />
           </Route>
-          <Route path='*' element={<ErrorComponent />} />
+          <Route path='*' element={<NoFound />} />
         </Routes>
       </HashRouter>
     </div>

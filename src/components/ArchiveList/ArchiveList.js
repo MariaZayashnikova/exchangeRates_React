@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import { getArchiveRates } from '../../services/services';
 import { getExchangeRates } from '../../services/services';
 import { getDateData } from '../DateUtils/DateUtils';
+import { Failed } from "../ErrorComponents/ErrorComponents";
 import './ArchiveList.css';
 
 function ArchiveList() {
@@ -14,6 +15,7 @@ function ArchiveList() {
     const [valueRate, setValueRate] = useState([]);
     const [loading, setLoading] = useState(true);
     const [nameRate, setNameRate] = useState();
+    const [error, setError] = useState(false);
 
     const changeLoading = () => setLoading(!loading);
 
@@ -49,6 +51,10 @@ function ArchiveList() {
             .then(data => {
                 result.push(data);
                 currentDate = getDateData(new Date(data.Date));
+            })
+            .catch(() => {
+                setError(true);
+                changeLoading();
             });
 
         for (let i = 1; i < 10; i++) {
@@ -78,29 +84,33 @@ function ArchiveList() {
     }, []);
 
     return (
-        <div className="currentList">
-            <div className="headerList">
-                <h4 className="headerList-titile">Данные за последние 10 дней по валюте: <strong>{nameRate}</strong></h4>
-                <Link to="/">
-                    <Button variant='secondary'>На главную</Button>
-                </Link>
-            </div>
-            <div className="headerList">
-                <h5>Дата</h5>
-                <h5>Значение в рублях</h5>
-            </div>
-            {loading ? <FontAwesomeIcon icon="fa-solid fa-spinner" className="spiner" size='2x' /> : null}
-            <ListGroup className="listBlock">
-                {valueRate.map(item => {
-                    return (
-                        <ListGroup.Item id="listItem" key={item.date}>
-                            <div>{item.date}</div>
-                            <div>{item.value}</div>
-                        </ListGroup.Item>
-                    )
-                })}
-            </ListGroup>
-        </div>
+        <>
+            {error ? <Failed /> :
+                <div className="currentList">
+                    <div className="headerList">
+                        <h4 className="headerList-titile">Данные за последние 10 дней по валюте: <strong>{nameRate}</strong></h4>
+                        <Link to="/">
+                            <Button variant='secondary'>На главную</Button>
+                        </Link>
+                    </div>
+                    <div className="headerList">
+                        <h5>Дата</h5>
+                        <h5>Значение в рублях</h5>
+                    </div>
+                    {loading ? <FontAwesomeIcon icon="fa-solid fa-spinner" className="spiner" size='2x' /> : null}
+                    <ListGroup className="listBlock">
+                        {valueRate.map(item => {
+                            return (
+                                <ListGroup.Item id="listItem" key={item.date}>
+                                    <div>{item.date}</div>
+                                    <div>{item.value}</div>
+                                </ListGroup.Item>
+                            )
+                        })}
+                    </ListGroup>
+                </div>
+            }
+        </>
     )
 }
 
