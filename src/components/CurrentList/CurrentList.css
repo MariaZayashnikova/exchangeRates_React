@@ -33,21 +33,22 @@
     text-decoration: none;
 }
 
-.listItem {
+#listItem {
     display: flex;
     justify-content: space-around;
     text-align: center;
     border-top: 1px solid rgba(8, 2, 48, 0.527);
     border-radius: 10px;
+    padding: 0;
 }
 
-.listItem:hover {
+#listItem:hover {
     background-image: linear-gradient(to right bottom, #ce18ce83, rgba(30, 15, 238, 0.452));
     cursor: pointer;
     color: white;
 }
 
-.listItem div {
+#listItem div, h5 {
     width: 33%;
     padding: 5px 0px;
 }
